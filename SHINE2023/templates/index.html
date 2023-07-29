@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <style>
+            #SourceVideo{
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+                width: 50%;
+            }
+            body{
+                background-color: purple;
+            }
+            button{
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            h1{
+                color: cyan;
+            }
+            #HistArea{
+                display: block;
+                width: auto;
+                height: 0px;
+                padding-left: 7px;
+                font-size: 20px;
+                color: white;
+                margin-top: 20px;
+                margin-left: auto;
+                margin-right: auto;
+                border-radius: 10px;
+                background: rgba(221, 160, 221, 0.4);
+            }
+        </style>
+        <h1 align="center">Robotic Arm Camera Stream</h1>
+    </head>
+    <body>
+        <img src="{{ url_for('video_feed_contours') }}" id="SourceVideo" style='border:5px solid#000000;border-color:Cyan'>
+        <p id="TimerText" align="center" style="color:yellow">Press Q to start recording | Press E to end recording</p>
+        <p id="RecordingText" align="center" style="color:white">Recording Status: None</p>
+ 
+        <button id="RecHist" onclick="PrintTimeHistory()" align="center" style="width:110px; height:50px; background-color:darkslateblue; border: none">Recording History</button>
+        <div id="HistArea"></div>
+ 
+        <script>
+            
+            let start = 0, timeCount = 0, timeCountStorage = [], finalDistanceStorage = [], USCounter, i = false
+            
+            document.addEventListener("keydown", function(keyevent){
+                recordTextElement = document.getElementById("RecordingText")
+                switch(keyevent.keyCode){
+                    case 32: // '{space}'
+                        console.log("Time Printed: "+timeCount)
+                        break;
+                    case 13: // '{enter}'
+                        i = !i
+                        if(i)
+                            document.getElementById("SourceVideo").src = "{{ url_for('video_feed') }}"
+                        else
+                            document.getElementById("SourceVideo").src = "{{ url_for('video_feed_contours') }}"
+                        break;
+                    case 81: // 'Q'
+                        console.log("Timer started!");
+                        start = Math.round(Date.now()/1000);
+                        recordTextElement.innerHTML = "Recording Status: Recording..."
+                        recordTextElement.style.color = "lime";
+                        break;
+                    case 69: // 'E'
+                        console.log("Timer stopped!");
+                        timeCount = Math.round(Date.now()/1000)-start;
+                        timeCountStorage.push(timeCount);
+                        finalDistanceStorage.push(USCounter);
+                        recordTextElement.innerHTML = "Recording Status: Recorded."
+                        recordTextElement.style.color = "red";
+                        break;
+                    default:
+                        for(let i = 0; i < timeCountStorage.length; i++)
+                            console.log(timeCountStorage[i]);
+                        break;
+                };
+            });
+ 
+            function PrintTimeHistory(){
+                Area = document.getElementById("HistArea")
+                Area.style.height = "0px";
+                Area.innerHTML = "";
+                for(let i = 0; i < timeCountStorage.length; i++){
+                    Area.innerHTML += "Object #"+String(i+1)+"<br>Time: "+String(timeCountStorage[i])+"sec(s)<br>Final Distance: ~"+String(finalDistanceStorage[i])+"cm <br><br>";
+                    Area.style.height = String(1+Area.scrollHeight)+"px"; 
+                }
+            }
+ 
+            var IntId = setInterval(updateDistance, 800)
+            $SCRIPT_ROOT = {{ request.script_root|tojson|safe }}
+            function updateDistance(){
+                $.getJSON($SCRIPT_ROOT+"/_getDist", function(data){
+                    USCounter = Math.round(data.d * 10) / 10;
+                });
+            }
+ 
+        </script>
+        
+    </body>
+</html>
