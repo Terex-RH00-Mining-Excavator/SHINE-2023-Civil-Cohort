@@ -1,5 +1,5 @@
-import src
 import time
+from src import src
 from flask import Flask, render_template, Response, stream_with_context, request, jsonify
 
 app = Flask(__name__)
@@ -25,4 +25,4 @@ def video_feed():
 if __name__ == "__main__":
 	time.sleep(0.1)
 	app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
-	app.run(host="0.0.0.0", port="5000", threaded=True, debug=False)
+	app.run(host="192.168.99.144", port="5000", threaded=True, debug=False)
