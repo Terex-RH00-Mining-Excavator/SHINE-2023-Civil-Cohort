@@ -1,6 +1,5 @@
 import cv2
 import time
-from random import randint
 import RPi.GPIO as GPIO
 
 def pulseIn(pin, timeout=1000):
