@@ -1,0 +1,30 @@
+#SourceVideo{
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	width: 50%;
+}
+body{
+	background-color: purple;
+}
+button{
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+}
+h1{
+	color: cyan;
+}
+#HistArea{
+	display: block;
+	width: auto;
+	height: 0px;
+	padding-left: 7px;
+	font-size: 20px;
+	color: white;
+	margin-top: 20px;
+	margin-left: auto;
+	margin-right: auto;
+	border-radius: 10px;
+	background: rgba(221, 160, 221, 0.4);
+}
