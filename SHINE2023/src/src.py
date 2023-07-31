@@ -19,9 +19,9 @@ def pulseIn(pin, timeout=1000):
 
 class basicOP:
 	def __init__(self, TP, EP, D, R, G, B, VALUE):
-		self.trigPin 	= TP
-		self.echoPin 	= EP
-		self.distance 	= D
+		self.trigPin 		= TP
+		self.echoPin 		= EP
+		self.distance 		= D
 		self.red 		= R
 		self.green 		= G
 		self.blue 		= B
