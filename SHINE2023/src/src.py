@@ -36,9 +36,7 @@ class basicOP:
 		time.sleep(0.00001)
 		GPIO.output(self.trigPin, False)
 		
-		#self.distance = pulseIn(self.echoPin, timeout) * 171500
-		self.distance = randint(0, 100)
-		
+		self.distance = pulseIn(self.echoPin, timeout) * 171500
 		
 		return self.distance
 	def video_stream_contours(self):
